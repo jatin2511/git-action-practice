@@ -1,0 +1,19 @@
+name: deployement-workflow
+on:
+  push:
+    branches:
+      - master
+      - "dev-*"
+      - "feat/**"
+    paths:
+      - 'src/components/**'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: first step
+        run: echo "first step======"
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: say hello
+        run: echo "hello====="
