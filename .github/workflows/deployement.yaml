@@ -1,19 +1,25 @@
-name: deployement-workflow
-on:
+name: store-generated-artifacts
+on: 
   push:
     branches:
-      - master
-      - "dev-*"
-      - "feat/**"
-    paths:
-      - 'src/components/**'
+      - main
+      - feat/**
 jobs:
-  deploy:
+  first-job:
     runs-on: ubuntu-latest
     steps:
-      - name: first step
-        run: echo "first step======"
-      - name: checkout repo
+      - name: first steps
+        run: echo "job started"
+      - name: checkout branches
         uses: actions/checkout@v4
-      - name: say hello
-        run: echo "hello====="
+      - name: store artifact
+        uses: actions/upload-artifacts@v4
+        with:
+          name: my-first-artifact
+          path: |
+            ./src
+            package.json
+      - name: final part
+        run: echo "collected the artifact" 
+            
+    
