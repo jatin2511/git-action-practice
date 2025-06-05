@@ -1,26 +1,30 @@
-name: store-generated-artifacts
+name: job-ouputs
 on: 
   push:
     branches:
       - main
-      - master
-      - feat/**
+      - 'dev-*'
 jobs:
-  first-job:
+  build:
+    runs-on: ubuntu-latest
+    outputs: 
+      script-file: ${{steps.job-output.output.script-file}}
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v4
+      - name: clone a filename from dist
+        id: job-output
+        run: find /dist/assets -name "*.js" -type f -exec echo "script-file={}" \; >> $GITHUB_OUTPUT
+      - name: completed
+        run: echo "job -completed artifact saved"
+      - name: echo output from step-2
+        run: echo "${{steps.job-output.output.script-file}}"
+  
+  deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: first steps
-        run: echo "job started"
-      - name: checkout branches
-        uses: actions/checkout@v4
-      - name: store artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-first-artifact
-          path: |
-            ./src
-            package.json
-      - name: final part
-        run: echo "collected the artifact" 
-            
+      - name: first step deployement
+        run: echo "${{needs.build.outputs.script-file}}"
+        
     
