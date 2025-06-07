@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: clone repo
         uses: actions/checkout@v4
+      - name: download cache to the runner from the cloud github cache
+        uses: actions/cache@v4
+        with:
+          path: '~/.npm'
+          key: cache-file-for${{hashFiles('**/package-lock.json')}}
       - name: install dependencies
         run: npm ci
       - name: build the repo
@@ -30,5 +35,13 @@ jobs:
     steps:
       - name: first step deployement
         run: echo "${{needs.build.outputs.script-file}}"
-        
+      - name: clone repo inside the runner machine
+        run: actions/checkout@v4
+      - name: download cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-cache-${{ hashFiles('**/package-lock.json') }}
+      - name: deployement
+        run: echo "deployed the project.................."  
     
