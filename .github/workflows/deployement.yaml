@@ -36,7 +36,7 @@ jobs:
       - name: first step deployement
         run: echo "${{needs.build.outputs.script-file}}"
       - name: clone repo inside the runner machine
-        run: actions/checkout@v4
+        uses: actions/checkout@v4
       - name: download cache
         uses: actions/cache@v4
         with:
